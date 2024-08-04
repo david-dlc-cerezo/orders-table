@@ -1,0 +1,23 @@
+.status {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.status-color {
+  width: 32px;
+  height: 18px;
+
+  &--in_progress {
+    background-color: cyan;
+  }
+
+  &--completed {
+    background-color: green;
+  }
+
+  &--pending {
+    background-color: orange;
+  }
+}
