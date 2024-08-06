@@ -1,66 +1,72 @@
 <h1>Order History</h1>
 
-<div class="order-filter">
-  <!-- Status -->
-  <div class="order-filter__status">
-    <label>Status</label>
-    <div class="order-filter__status__checkboxes">
-      @for (status of allStatuses; track status) {
-      <mat-checkbox (change)="updateSelectedStatuses(status, $event.checked)">
-        <cmx-status [status]="status"></cmx-status>
-      </mat-checkbox>
-      }
+<mat-expansion-panel class="order-filter" [expanded]="filterExpanded">
+  <mat-expansion-panel-header class="order-filter__header">
+    <mat-icon>filter_alt</mat-icon> Filter
+  </mat-expansion-panel-header>
+
+  <div class="order-filter__content">
+    <!-- Status -->
+    <div class="order-filter__status">
+      <label>Status</label>
+      <div class="order-filter__status__checkboxes">
+        @for (status of allStatuses; track status) {
+        <mat-checkbox (change)="updateSelectedStatuses(status, $event.checked)">
+          <cmx-status [status]="status"></cmx-status>
+        </mat-checkbox>
+        }
+      </div>
+    </div>
+
+    <!-- Product Line -->
+    <div class="order-filter__product-line">
+      <mat-form-field>
+        <mat-label>Product Line</mat-label>
+        <mat-select [formControl]="filterForm.controls.product_line">
+          <mat-option value="">All Product Lines</mat-option>
+          @for (productLine of allProductLines; track productLine) {
+          <mat-option [value]="productLine">
+            {{ productLine | productLineText }}
+          </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!-- Date Requested -->
+    <div class="order-filter__dates">
+      <mat-form-field>
+        <mat-label>Enter a date range</mat-label>
+        <mat-date-range-input
+          [formGroup]="filterForm.controls.date_requested"
+          [rangePicker]="picker"
+        >
+          <input matStartDate placeholder="Start date" formControlName="from" />
+          <input matEndDate placeholder="End date" formControlName="to" />
+        </mat-date-range-input>
+        <mat-datepicker-toggle
+          matIconSuffix
+          [for]="picker"
+        ></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+      </mat-form-field>
+    </div>
+
+    <!-- Order Number -->
+    <div class="order-filter__order-number">
+      <mat-form-field>
+        <mat-label>Search for Order Number</mat-label>
+        <input
+          matInput
+          type="number"
+          placeholder="Search for orders with this number"
+          [formControl]="filterForm.controls.order_number"
+        />
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
     </div>
   </div>
-
-  <!-- Product Line -->
-  <div class="order-filter__product-line">
-    <mat-form-field>
-      <mat-label>Product Line</mat-label>
-      <mat-select [formControl]="filterForm.controls.product_line">
-        <mat-option value="">All Product Lines</mat-option>
-        @for (productLine of allProductLines; track productLine) {
-        <mat-option [value]="productLine">
-          {{ productLine | productLineText }}
-        </mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
-  </div>
-
-  <!-- Date Requested -->
-  <div class="order-filter__dates">
-    <mat-form-field>
-      <mat-label>Enter a date range</mat-label>
-      <mat-date-range-input
-        [formGroup]="filterForm.controls.date_requested"
-        [rangePicker]="picker"
-      >
-        <input matStartDate placeholder="Start date" formControlName="from" />
-        <input matEndDate placeholder="End date" formControlName="to" />
-      </mat-date-range-input>
-      <mat-datepicker-toggle
-        matIconSuffix
-        [for]="picker"
-      ></mat-datepicker-toggle>
-      <mat-date-range-picker #picker></mat-date-range-picker>
-    </mat-form-field>
-  </div>
-
-  <!-- Order Number -->
-  <div class="order-filter__order-number">
-    <mat-form-field>
-      <mat-label>Search for Order Number</mat-label>
-      <input
-        matInput
-        type="number"
-        placeholder="Search for orders with this number"
-        [formControl]="filterForm.controls.order_number"
-      />
-      <mat-icon matSuffix>search</mat-icon>
-    </mat-form-field>
-  </div>
-</div>
+</mat-expansion-panel>
 
 @if(orders.length) {
 <div class="orders-table">

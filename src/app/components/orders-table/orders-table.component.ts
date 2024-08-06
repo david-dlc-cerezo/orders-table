@@ -1,3 +1,4 @@
+import { BreakpointObserver } from '@angular/cdk/layout';
 import { DatePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -8,6 +9,7 @@ import {
   provideNativeDateAdapter,
 } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatExpansionModule } from '@angular/material/expansion';
 import {
   MAT_FORM_FIELD_DEFAULT_OPTIONS,
   MatFormFieldModule,
@@ -38,6 +40,7 @@ import { StatusComponent } from '../status/status.component';
     MatDatepickerModule,
     MatCheckboxModule,
     MatSelectModule,
+    MatExpansionModule,
   ],
   providers: [
     provideNativeDateAdapter(),
@@ -76,15 +79,21 @@ export class OrdersTableComponent implements OnInit, OnDestroy {
     }),
   });
 
+  public filterExpanded = true;
+
   public allStatuses = Object.values(ProductStatus);
 
   public allProductLines = Object.values(ProductLine);
 
   private subscriptions = new Subscription();
 
-  constructor(private readonly ordersService: OrdersService) {}
+  constructor(
+    private readonly ordersService: OrdersService,
+    private readonly breakpointObserver: BreakpointObserver
+  ) {}
 
   ngOnInit(): void {
+    // Initial data lodad
     this.ordersService.getOrders().subscribe({
       next: (orders) => {
         this.orders = orders;
@@ -95,6 +104,17 @@ export class OrdersTableComponent implements OnInit, OnDestroy {
       },
     });
 
+    // Screen Responsive
+    this.subscriptions.add(
+      this.breakpointObserver.observe(['(min-width: 1180px)']).subscribe({
+        next: ({ matches }) => {
+          this.filterExpanded = matches;
+        },
+        error: console.error,
+      })
+    );
+
+    // Filter data
     this.subscriptions.add(
       this.filterForm.valueChanges
         .pipe(

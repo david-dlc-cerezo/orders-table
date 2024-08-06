@@ -3,16 +3,31 @@ h1 {
   font-weight: bold;
 }
 
+$breakpoint: 1180px;
+
 .order-filter {
-  padding: 18px 24px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  gap: 8px;
-  width: 100%;
-  background-color: #ffffff;
-  box-sizing: border-box;
-  filter: drop-shadow(0px 3px 4px rgba(0, 0, 0, 0.2));
+  &__header {
+    mat-icon {
+      margin-right: 8px;
+    }
+
+    @media screen and (min-width: $breakpoint) {
+      display: none;
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
+
+    @media screen and (min-width: $breakpoint) {
+      padding-top: 20px;
+      flex-direction: row;
+    }
+  }
 
   &__status {
     display: flex;
