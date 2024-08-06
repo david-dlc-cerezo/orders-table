@@ -2,7 +2,7 @@
   @if (status && withColor) {
   <div
     class="status-color"
-    [ngClass]="'status-color--' + status?.toLowerCase()"
+    [ngClass]="'status-color--' + status.toLowerCase()"
   ></div>
   }
   <span>{{ statusText }}</span>

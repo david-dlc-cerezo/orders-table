@@ -10,7 +10,7 @@ export enum ProductLine {
   Aggregates = 'AGGREGATES',
 }
 
-export type Product = {
+export type Order = {
   status: ProductStatus;
   order_number: number;
   product_line: ProductLine;
